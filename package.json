@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .js,.ts",
-    "watch": "webpack --watch --config webpack.dev.config.js",
-    "start": "webpack --watch & webpack-dev-server --open-page 'webpack-dev-server/' --config webpack.dev.config.js",
+    "watch": "webpack --watch --config webpack.dev.config.js --ext .js,.ts",
+    "start": "webpack --watch & webpack-dev-server --open-page 'webpack-dev-server/' --config webpack.dev.config.js --ext .js,.ts",
     "build": "webpack --config webpack.prod.config.js",
     "postinstall": "if [ ! $CIRCLECI ]; then npx husky install; fi",
     "precommit": "npm run lint"
