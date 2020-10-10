@@ -9,7 +9,8 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
-      - run: npm ci
+      - run: printenv
+      #- run: npm ci
       - save_cache:
           paths:
             - node_modules
