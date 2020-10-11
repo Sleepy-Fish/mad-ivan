@@ -8,6 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: 'index.js',
   },
+  resolve: {
+    extensions: ['.js', '.ts'],
+  },
   plugins: [
     new ESLintPlugin({
       files: './src/',

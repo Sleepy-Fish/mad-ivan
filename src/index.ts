@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import loader from './loader/index.ts';
-import { Ship } from './entity/index.ts';
+import loader from './loader';
+import { Ship } from './entity';
 
 let type = 'WebGL';
 if (!PIXI.utils.isWebGLSupported()) {

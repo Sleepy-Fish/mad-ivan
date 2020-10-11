@@ -1,4 +1,4 @@
-import Ship from './Ship/index.ts';
+import Ship from './Ship';
 
 export {
   Ship,

@@ -20,6 +20,7 @@ jobs:
            paths:
             - ./public/*
             - ./static/*
+            - ./assets/*
             - ./index.html
   deploy:
     machine:

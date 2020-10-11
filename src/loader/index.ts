@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 export default (cb: Function, handleProgress: Function): PIXI.Loader => {
-  const loader = new PIXI.Loader('public/assets/');
+  const loader = new PIXI.Loader('assets/');
   loader.onProgress.add(handleProgress as any);
   loader.onComplete.add(cb as any);
 

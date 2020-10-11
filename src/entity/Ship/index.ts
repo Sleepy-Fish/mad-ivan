@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import * as PIXI_PARTICLES from 'pixi-particles';
-import Entity from '../Entity.ts';
-import { flameSettings, sparkSettings } from './emitter-settings.ts';
+import Entity from '../Entity';
+import { flameSettings, sparkSettings } from './emitter-settings';
 
 export default class Ship extends Entity {
   app: PIXI.Application;
