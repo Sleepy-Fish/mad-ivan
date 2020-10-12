@@ -16,6 +16,11 @@ window.addEventListener('resize', () => {
   app.renderer.resize(window.innerWidth, window.innerHeight);
 });
 document.body.appendChild(app.view);
+const helpText = new PIXI.Text('Press and hold W/S and I/K to control thrusters.');
+helpText.position.x = 10;
+helpText.position.y = 10;
+helpText.style.fill = 0xffffff;
+app.stage.addChild(helpText);
 
 loader(
   app,

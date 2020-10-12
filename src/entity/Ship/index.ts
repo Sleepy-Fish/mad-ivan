@@ -40,6 +40,17 @@ export default class Ship extends Entity {
       this.rightForeThruster,
       this.rightAftThruster,
     ];
+    const graphics = new PIXI.Graphics();
+    graphics.beginFill(0x3498db);
+    graphics.drawEllipse(0, -100, 100, 300);
+    graphics.endFill();
+    graphics.beginFill(0x3498db);
+    graphics.drawRect(-200, -50, 120, 100);
+    graphics.endFill();
+    graphics.beginFill(0x3498db);
+    graphics.drawRect(80, -50, 120, 100);
+    graphics.endFill();
+    this.container.addChild(graphics);
   }
 
   run (delta: number): void {
