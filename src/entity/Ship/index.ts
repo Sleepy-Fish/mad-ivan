@@ -1,68 +1,66 @@
 import * as PIXI from 'pixi.js';
-import * as PIXI_PARTICLES from 'pixi-particles';
 import Entity from '../Entity';
-import { flameSettings, sparkSettings } from './emitter-settings';
+import Thruster from './Thruster';
+import { ShipOptions } from '../types';
 
 export default class Ship extends Entity {
-  app: PIXI.Application;
-  container: PIXI.Container;
-  elapsed: number;
-  flameContainer: PIXI_PARTICLES.LinkedListContainer;
-  flameEmitter: PIXI_PARTICLES.Emitter;
-  sparkContainer: PIXI_PARTICLES.LinkedListContainer;
-  sparkEmitter: PIXI_PARTICLES.Emitter;
+  readonly app: PIXI.Application;
+  readonly container: PIXI.Container;
+  private readonly leftForeThruster: Thruster;
+  private readonly leftAftThruster: Thruster;
+  private readonly rightForeThruster: Thruster;
+  private readonly rightAftThruster: Thruster;
+  private readonly thrusters: Thruster[];
 
-  constructor (app: PIXI.Application, resources: Object) {
-    super(app);
-    this.elapsed = Date.now();
-    this.flameContainer = new PIXI_PARTICLES.LinkedListContainer();
-    this.sparkContainer = new PIXI_PARTICLES.LinkedListContainer();
-
-    const fireTextures = Object
-      .entries(resources)
-      .filter(entry => entry[0].startsWith('fire'))
-      .map(entry => entry[1].texture);
-
-    this.flameEmitter = new PIXI_PARTICLES.Emitter(
-      this.flameContainer,
-      fireTextures,
-      flameSettings,
-    );
-    this.sparkEmitter = new PIXI_PARTICLES.Emitter(
-      this.sparkContainer,
-      [PIXI.Texture.WHITE],
-      sparkSettings,
-    );
-    this.container.addChild(this.flameContainer, this.sparkContainer);
-    window.addEventListener('resize', () => {
-      this.flameEmitter.spawnPos.x = window.innerWidth / 2;
-      this.flameEmitter.spawnPos.y = window.innerHeight / 2;
-      this.sparkEmitter.spawnPos.x = window.innerWidth / 2;
-      this.sparkEmitter.spawnPos.y = window.innerHeight / 2;
+  constructor (app: PIXI.Application, options?: ShipOptions) {
+    super(app, options);
+    this.leftForeThruster = new Thruster(this, 'KeyW', {
+      x: -150,
+      y: -10,
+      direction: 270,
     });
+    this.leftAftThruster = new Thruster(this, 'KeyS', {
+      x: -150,
+      y: 10,
+      direction: 90,
+    });
+    this.rightForeThruster = new Thruster(this, 'KeyI', {
+      x: 150,
+      y: -10,
+      direction: 270,
+    });
+    this.rightAftThruster = new Thruster(this, 'KeyK', {
+      x: 150,
+      y: 10,
+      direction: 90,
+    });
+    this.thrusters = [
+      this.leftForeThruster,
+      this.leftAftThruster,
+      this.rightForeThruster,
+      this.rightAftThruster,
+    ];
   }
 
   run (delta: number): void {
     super.run(delta);
-    const now = Date.now();
-    this.flameEmitter.update((now - this.elapsed) * 0.001);
-    this.sparkEmitter.update((now - this.elapsed) * 0.001);
-    this.elapsed = now;
+    this.thrusters.forEach(t => t.run(delta));
+  }
+
+  position (val?: PIXI.Point): PIXI.Point | Entity {
+    const output = super.position(val);
+    return output;
   }
 
   activate (): Ship {
     super.activate();
-    this.flameEmitter.emit = true;
-    this.sparkEmitter.emit = true;
+    this.thrusters.forEach(t => t.activate());
     return this;
   }
 
   deactivate (): Ship {
     super.deactivate();
-    this.flameEmitter.emit = false;
-    this.sparkEmitter.emit = false;
-    this.flameEmitter.cleanup();
-    this.sparkEmitter.cleanup();
+    this.thrusters.forEach(t => t.deactivate());
     return this;
   }
 }

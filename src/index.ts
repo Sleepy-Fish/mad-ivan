@@ -18,8 +18,12 @@ window.addEventListener('resize', () => {
 document.body.appendChild(app.view);
 
 loader(
+  app,
   (loader: PIXI.Loader, resources: Object) => {
-    const ship = new Ship(app, resources);
+    const ship = new Ship(app, {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    });
     ship.activate();
     app.ticker.add(delta => ship.run(delta));
   },

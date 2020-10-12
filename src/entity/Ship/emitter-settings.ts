@@ -68,8 +68,8 @@ export const flameSettings = {
     isStepped: false,
   },
   startRotation: {
-    min: 255,
-    max: 285,
+    min: 80,
+    max: 100,
   },
   rotationSpeed: {
     min: -110,
@@ -80,10 +80,10 @@ export const flameSettings = {
     max: 1,
   },
   frequency: 0.09,
-  maxParticles: 10,
+  maxParticles: 0,
   pos: {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
+    x: 0,
+    y: 0,
   },
   addAtBack: false,
   spawnType: 'circle',
@@ -102,7 +102,7 @@ export const sparkSettings = {
         time: 0,
       },
       {
-        value: 0.9,
+        value: 0.3,
         time: 1,
       },
     ],
@@ -141,40 +141,40 @@ export const sparkSettings = {
   speed: {
     list: [
       {
-        value: 180,
+        value: 280,
         time: 0,
       },
       {
-        value: 40,
+        value: 110,
         time: 1,
       },
     ],
     isStepped: false,
   },
   startRotation: {
-    min: 240,
-    max: 300,
+    min: 70,
+    max: 110,
   },
   rotationSpeed: {
     min: -360,
     max: 360,
   },
   lifetime: {
-    min: 2,
-    max: 2,
+    min: 0.9,
+    max: 1.1,
   },
-  frequency: 0.6,
-  spawnChance: 0.6,
-  maxParticles: 8,
+  frequency: 0.2,
+  spawnChance: 0.9,
+  maxParticles: 0,
   pos: {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
+    x: 0,
+    y: 0,
   },
   addAtBack: false,
   spawnType: 'circle',
   spawnCircle: {
     x: 0,
-    y: -20,
+    y: 20,
     r: 20,
   },
 };
