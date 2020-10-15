@@ -7,5 +7,13 @@
     "moduleResolution": "node",
     "target": "es5",
     "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@": [ "src/*" ],
+      "@/*": [ "src/*" ],
+      "@src/*": [ "src/*" ],
+      "@static/*": [ "static/*" ],
+      "@assets/*": [ "assets/*" ],
+    }
   }
 }

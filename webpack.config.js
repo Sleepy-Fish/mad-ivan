@@ -10,6 +10,12 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts'],
+    alias: {
+      '@': path.join(__dirname, 'src'),
+      '@src': path.join(__dirname, 'src'),
+      '@static': path.join(__dirname, 'static'),
+      '@assets': path.join(__dirname, 'assets'),
+    },
   },
   plugins: [
     new ESLintPlugin({

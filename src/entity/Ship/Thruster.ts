@@ -1,14 +1,17 @@
 import * as PIXI from 'pixi.js';
 import * as PIXI_PARTICLES from 'pixi-particles';
-import Ship from '.';
-import { ThrusterOptions } from '../types';
-import { flameSettings, sparkSettings } from './emitter-settings';
+import { GAME } from '@';
+import Entity from '@/entity/Entity';
+import Ship from './Ship';
+import { ThrusterOptions } from './types';
+import { flameSettings, sparkSettings } from './settings';
 
-export default class ShipFlame {
+export default class Thruster extends Entity {
   readonly ship: Ship;
   readonly key: string;
   private readonly flameContainer: PIXI_PARTICLES.LinkedListContainer;
   private readonly sparkContainer: PIXI_PARTICLES.LinkedListContainer;
+  private readonly containers: PIXI.Container[];
   private flameEmitter: PIXI_PARTICLES.Emitter;
   private sparkEmitter: PIXI_PARTICLES.Emitter;
   private _thrust: number;
@@ -17,18 +20,24 @@ export default class ShipFlame {
   deceleration: number;
 
   constructor (ship: Ship, key: string, options?: ThrusterOptions) {
+    super(ship.container, options);
+    /* ==== Set Variables ==== */
     this.ship = ship;
     this.key = key;
     this.acceleration = options?.acceleration ?? 0.01;
     this.deceleration = options?.deceleration ?? 0.05;
+    this._scale = options?.scale ?? 1;
     this._powered = false;
     this._thrust = 0;
     this.flameContainer = new PIXI_PARTICLES.LinkedListContainer();
     this.sparkContainer = new PIXI_PARTICLES.LinkedListContainer();
+    this.containers = [this.flameContainer, this.sparkContainer];
+
     const fireTextures = Object
-      .entries(ship.app.loader.resources)
+      .entries(GAME.LOADER.resources)
       .filter(entry => entry[0].startsWith('fire'))
-      .map(entry => entry[1].texture);
+      .map(entry => (entry[1] as PIXI.LoaderResource).texture);
+
     this.flameEmitter = new PIXI_PARTICLES.Emitter(
       this.flameContainer,
       fireTextures,
@@ -45,7 +54,8 @@ export default class ShipFlame {
         startRotation: { min: (options?.direction ?? 90) - 20, max: (options?.direction ?? 90) + 20 },
       }),
     );
-    ship.container.addChild(this.flameContainer, this.sparkContainer);
+    this.scale(this._scale);
+    ship.container.addChild(...this.containers);
     window.addEventListener('keydown', (e) => {
       if (e.code === this.key) this._powered = true;
     });
@@ -87,16 +97,19 @@ export default class ShipFlame {
     return this._thrust;
   }
 
-  activate (): void {
+  activate (): Thruster {
     this.flameEmitter.emit = true;
     this.sparkEmitter.emit = true;
+    return this;
   }
 
-  deactivate (): void {
+  deactivate (): Thruster {
+    super.deactivate();
     this.thrust(0);
     this.flameEmitter.emit = false;
     this.sparkEmitter.emit = false;
     this.flameEmitter.cleanup();
     this.sparkEmitter.cleanup();
+    return this;
   }
 };

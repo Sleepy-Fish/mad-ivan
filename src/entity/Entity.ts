@@ -2,19 +2,21 @@ import * as PIXI from 'pixi.js';
 import { EntityOptions } from './types';
 
 export default class Entity {
-  readonly app: PIXI.Application;
+  readonly parent: PIXI.Container;
   readonly container: PIXI.Container;
+  protected _position: PIXI.Point;
+  protected _scale: number;
   active: boolean;
-  protected coordinates: PIXI.Point;
 
-  constructor (app: PIXI.Application, options?: EntityOptions) {
-    this.app = app;
+  constructor (parent: PIXI.Container, options?: EntityOptions) {
     this.active = false;
     this.container = new PIXI.Container();
     this.container.visible = false;
-    this.coordinates = new PIXI.Point(options?.x ?? 0, options?.y ?? 0);
-    this.container.position = this.coordinates;
-    app.stage.addChild(this.container);
+    this._position = new PIXI.Point(options?.x ?? 0, options?.y ?? 0);
+    this._scale = options?.scale ?? 1;
+    this.container.position = this._position;
+    this.container.scale = new PIXI.Point(this._scale, this._scale);
+    parent.addChild(this.container);
   }
 
   run (delta: number): void {
@@ -22,10 +24,18 @@ export default class Entity {
   }
 
   position (val?: PIXI.Point): PIXI.Point | Entity {
-    if (val === undefined) return this.coordinates;
-    this.coordinates = val;
-    this.container.position = this.coordinates;
+    if (val === undefined) return this._position;
+    this._position = val;
+    this.container.position = this._position;
     return this;
+  }
+
+  scale (val?: number): number {
+    if (val !== undefined) {
+      this._scale = val;
+      this.container.scale = new PIXI.Point(val, val);
+    }
+    return this._scale;
   }
 
   activate (): Entity {
