@@ -11,6 +11,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "standard/no-callback-literal": "off",
     "comma-dangle": [2, "always-multiline"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": 1,
